@@ -1,0 +1,19 @@
+---
+- hosts: all
+  remote_user: root
+  gather_facts: false
+  tasks:
+  - name: stop iptables
+    shell: /etc/init.d/iptables stop;chkconfig iptables off
+    tags:
+      - iptables
+
+  - name: stop selinux
+    shell:
+      /usr/sbin/setenforce 0;
+      cp /etc/sysconfig/selinux{,.`date +%Y%m%d`};
+      /bin/sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux;
+    tags:
+      - selinux
+
+#/etc/init.d/iptables status;chkconfig --list|grep iptables;cat /etc/sysconfig/selinux;getenforce

@@ -1,0 +1,22 @@
+#!/usr/bin/expect -f                                                                                                          
+
+if {$argc<2} {
+puts stderr "Usage: $argv0 host user password timeout cmd path"
+exit 1
+}
+
+#set HOST [lindex $argv 0]
+#set USER [lindex $argv 1]
+set CMD [lindex $argv 1]
+set PASSWD [lindex $argv 0]
+set TIMEOUT [lindex $argv 2]
+#set MYCMD [lindex $argv 4]
+#set MYPATH [lindex $argv 3]
+set timeout $TIMEOUT
+
+spawn /bin/bash $CMD
+expect {
+    "(yes/no)" { send "yes\r"; exp_continue}
+    "assword:" { send "$PASSWD\r"}
+}
+#expect eof

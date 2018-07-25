@@ -1,0 +1,50 @@
+--- 
+- hosts: all
+  remote_user: root
+  gather_facts: true
+  tasks:
+  - name: mongodb repo
+    get_url: url=https://raw.githubusercontent.com/mds1455975151/tools/master/mongodb/mongodb-org-3.6.repo dest=/etc/yum.repos.d/
+    tags: mongodb_repo
+
+  - name: mongodb install
+    yum: state=latest name={{ item }}
+    with_items:
+      - mongodb-org
+      - mongodb-org-server
+      - mongodb-org-shell
+      - mongodb-org-mongos
+      - mongodb-org-tools 
+    tags: mongodb_install
+
+  - name: rsync /etc/mongod.conf
+    template:
+      src: files/mongodb/mongod.conf.j2
+      dest: /etc/mongod.conf
+      owner: root
+      group: root
+      mode: 0664
+    tags: rsync_mongodb_conf
+
+  - name: Make sure a service is running
+    systemd: 
+      state: started 
+      name: mongod
+    tags: mongod_service_running
+
+  - name: enable service etcd and ensure it is not masked
+    systemd:
+      name: mongod
+      enabled: yes
+      masked: no
+    tags: mongod_service_start
+
+  - name: mongo shell Customize the Prompt
+    get_url: url=https://raw.githubusercontent.com/mds1455975151/tools/master/mongodb/.mongorc.js dest=~/.mongorc.js
+    tags: rsync_mongodb_customize_prompt_conf
+
+  - name: print mongo shell login 
+    debug:
+      msg: "login cmd : mongo --host {{ ansible_eth0.ipv4.address }}:27017"
+      # msg: "login cmd : mongo --host 127.0.0.1:27017"
+    tags: print_mongo_login_cmd

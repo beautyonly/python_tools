@@ -1,0 +1,64 @@
+---
+- import_playbook: install_jdk.yml
+- import_playbook: install_nginx.yml
+
+- hosts: all
+  remote_user: root
+  gather_facts: true
+  tasks:
+  #- name: install graylog repository
+  #  shell: rpm -Uvh https://packages.graylog2.org/repo/packages/graylog-2.4-repository_latest.rpm
+  #  ignore_errors: yes
+  #  tags: install_graylog_repo
+
+  - name: install graylog server packages
+    shell: rpm -ivh https://packages.graylog2.org/repo/el/stable/2.4/x86_64/graylog-server-2.4.3-1.noarch.rpm
+    ignore_errors: yes
+    tags: install_graylog_repo
+
+  - name: graylog-server packages install
+    yum: state=latest name={{ item }}
+    with_items:
+      - pwgen
+      # - graylog-server
+    tags: install_graylog-server
+
+  - name: rsync /etc/graylog/server/server.conf
+    template:
+      src: files/graylog-server/server.conf.j2
+      dest: /etc/graylog/server/server.conf
+      owner: root
+      group: root
+      mode: 0664
+    tags: rsync_graylog_server_conf
+
+  #- name: Make sure a service is running
+  #  systemd: 
+  #    state: started 
+  #    name: graylog-server
+  #  tags: graylog_server_service_running
+
+  - name: print change graylog server config
+    debug:
+      msg: "please change graylog server config and start service(es\mongodb\api configs)"
+    tags: print_change_graylog_server_config
+
+  - name: enable service and ensure it is not masked
+    systemd:
+      name: graylog-server
+      enabled: yes
+      masked: no
+    tags: graylog_server_service_start
+
+  - name: rsync /etc/nginx/conf.d/graylog.conf
+    template:
+      src: files/graylog-server/graylog.conf
+      dest: /etc/nginx/conf.d/graylog.conf
+      owner: root
+      group: root
+      mode: 0664
+    tags: rsync_graylog_nginx_conf
+
+  - name: nginx restart
+    shell: systemctl restart nginx
+    tags: restart_nginx

@@ -1,0 +1,23 @@
+---
+# Tasks specific for RedHat systems
+
+- name: rsysc jdk files
+  copy:
+    src: files/{{ item }}
+    dest: /data0/src/{{ item }}
+    owner: root
+    group: root
+    mode: 0664
+  with_items:
+    - jdk-8u161-linux-x64.rpm
+    - java_env.sh
+  tags: rsync_jdk_files
+  
+- name: install jdk-8u161-linux-x64.rpm
+  shell: rpm -ivh /data0/src/jdk-8u161-linux-x64.rpm
+  ignore_errors: yes
+  tags: install_jdk
+
+- name: java env setup
+  shell: sh /data0/src/java_env.sh
+  tags: config_jdk_env

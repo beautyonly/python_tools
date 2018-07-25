@@ -1,0 +1,9 @@
+- name: ntp setup
+  hosts: test01_gs_42.62.121.48
+  user: ansible
+  sudo: yes
+  sudo_user: root
+  tasks:
+  - name: Install ntpd
+    command: echo 1
+  #  yum: name=ntpd state=restarted

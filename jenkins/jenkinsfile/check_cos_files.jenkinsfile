@@ -1,0 +1,26 @@
+pipeline {
+    agent any
+	options {
+	    ansiColor('xterm')
+	    retry(3)
+	    timeout(activity: true, time: 10, unit: 'SECONDS')
+	}
+    triggers {
+        cron '0 0 * * *'
+    }
+    stages {
+        stage('check ldap log') {
+            steps {
+				timestamps {
+					echo 'starting check ldap log ...'
+					sh 'ssh 10.0.0.23 "sh /home/deploy/scripts/cos_check_file.sh"'
+				}
+            }
+        }
+    }
+    post {
+        always {
+            emailext body: '$DEFAULT_CONTENT', subject: '$DEFAULT_SUBJECT', to: 'dongsheng.ma@lemongrassmedia.cn'
+        }
+    }
+}

@@ -1,0 +1,21 @@
+dn: cn=%SERVICE,ou=Sudoers,dc=xxxxx,dc=com
+objectClass: top
+objectClass: sudoRole
+cn: %SERVICE
+sudoUser: %SERVICE
+sudoHost: ALL
+sudoRunAsUser: ALL
+sudoCommand: ALL
+sudoOption: !authenticate
+sudoCommand: !/bin/su*
+sudoCommand: !/usr/bin/vim /etc/sudoers*
+sudoCommand: !/bin/vi /etc/sudoers*
+sudoCommand: !/usr/sbin/visudo
+sudoCommand: !/usr/sbin/adduser*
+sudoCommand: !/usr/sbin/useradd*
+sudoCommand: !/usr/sbin/userdel*
+sudoCommand: !/usr/sbin/groupadd*
+sudoCommand: !/usr/sbin/groupdel*
+sudoCommand: !/bin/sh
+sudoCommand: !/bin/bash
+sudoCommand: !/usr/bin/login

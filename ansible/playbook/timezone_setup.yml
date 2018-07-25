@@ -1,0 +1,19 @@
+---
+- hosts: all
+  become: yes
+  become_user: root
+  remote_user: root
+  tasks:
+  - name: set timezone to Asia/Shanghai
+    timezone:
+      name: Asia/Shanghai
+
+  #- name: setup timezone
+  #  file:
+  #    src: /usr/share/zoneinfo/Asia/Shanghai
+  #    dest: /etc/localtime
+  #    state: link
+  #    owner: root
+  #    group: root
+  #    mode: 0644
+  #  tags: setup_timezone

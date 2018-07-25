@@ -1,0 +1,17 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: nginx
+        track: stable
+    spec:
+      containers:
+      - name: nginx
+        image: gtest.com/k8s/nginx:1.10
+        ports:
+        - containerPort: 80

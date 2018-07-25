@@ -1,0 +1,20 @@
+---
+- hosts: all
+  remote_user: root
+  tasks:
+  - name: rsysc 90-graylog.conf
+    copy:
+      src: files/90-graylog.conf
+      dest: /etc/rsyslog.d/90-graylog.conf
+      owner: root
+      group: root
+      mode: 0644
+
+  - name: Make sure a service is running
+    systemd: state=started name=rsyslog
+
+  - name: enable service httpd and ensure it is not masked
+    systemd:
+      name: rsyslog
+      enabled: yes
+      masked: no

@@ -1,0 +1,34 @@
+--- 
+- hosts: all
+  remote_user: root
+  gather_facts: false
+  tasks:
+  - name: install twemproxy
+    shell: yum install -y twemproxy-0.4.1-0.el7.x86_64
+    tags: install_twemproxy
+
+  - name: rsysc twemproxy config file
+    copy:
+      src: files/game_conf/twemproxy.yml
+      dest: /etc/twemproxy.yml
+      owner: root
+      group: root
+      mode: 0664
+    tags: rsync_twemproxy_config_file
+
+  - name: Make sure a service is running
+    systemd:
+      state: started
+      name: twemproxy
+    tags: twemproxy_service_running
+
+  - name: enable service and ensure it is not masked
+    systemd:
+      name: twemproxy
+      enabled: yes
+      masked: no
+    tags: twemproxy_service_start
+
+  - name: redis-cli install
+    yum: state=latest name=redis
+    tags: install_redis_cli

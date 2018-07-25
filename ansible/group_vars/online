@@ -1,0 +1,3 @@
+---
+# file: /etc/ansible/group_vars/online
+branch_name: online

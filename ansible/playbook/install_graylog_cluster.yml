@@ -1,0 +1,6 @@
+---
+- import_playbook: install_jdk.yml
+- import_playbook: install_mongodb.yml
+- import_playbook: install_elasticsearch.yml
+- import_playbook: install_nginx.yml
+- import_playbook: install_graylog_server.yml

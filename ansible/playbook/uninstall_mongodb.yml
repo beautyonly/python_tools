@@ -1,0 +1,20 @@
+--- 
+- hosts: all
+  remote_user: root
+  gather_facts: false
+  tasks:
+  - name: mongodb uninstall
+    yum: state=absent name={{ item }}
+    with_items:
+      - mongodb-org
+      - mongodb-org-server
+      - mongodb-org-shell
+      - mongodb-org-mongos
+      - mongodb-org-tools
+    tags: mongodb_uninstall
+
+  - name: clean files
+    file: name={{ item }} state=absent
+    with_items:
+      - "/var/lib/mongo"
+      - "/etc/mongod.conf"

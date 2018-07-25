@@ -1,0 +1,73 @@
+--- 
+- import_playbook: create_work_dir.yml
+
+- hosts: all
+  remote_user: root
+  gather_facts: false
+  tasks:
+  - name: glibc install
+    yum: state=latest name={{item}}
+    with_items:
+      - glibc.i686
+      - libstdc++
+      - libstdc++.so.6
+    tags: install_nodejs_requires
+
+  - name: install nodejs
+    shell: cd /data0/src && \
+           rsync -avz {{ REPO_IP }}::DATA/devops/packages/node-v8.10.0-linux-x86.tar.gz . && \
+           tar -zxf node-v8.10.0-linux-x86.tar.gz -C /usr/local/ && \
+           chown -R root.root /usr/local/node-v8.10.0-linux-x86
+    tags: install_nodejs
+
+  - name: nodejs path link
+    shell: cd /usr/local/ && ln -s node-v8.10.0-linux-x86 node
+    ignore_errors: yes
+    tags: create_node_link
+
+  - name: create link /usr/bin/node
+    shell: ln -s /usr/local/node/bin/{{ item }} /usr/bin/{{ item }} ; ln -s /usr/local/node/bin/{{ item }} /usr/local/bin/{{ item }}
+    ignore_errors: yes
+    with_items:
+      - node
+      - npm
+    tags: create_node_bin_link
+
+  - name: rsync nodejs_env.sh
+    copy:
+      src: files/nodejs_env.sh
+      dest: /data0/src/nodejs_env.sh
+      owner: root
+      group: root
+      mode: 0755
+    tags: rsync_nodejs_env_scripts
+
+  - name: nodejs env setup
+    shell: sh /data0/src/nodejs_env.sh
+    tags: config_nodejs_env
+  
+  - name: get node version
+    shell: node -v
+    register: node_version
+    tags: print_node_version
+
+  - name: cnpm install
+    shell: npm i cnpm -g
+  
+  - name: create link /usr/bin/cnpm
+    shell: ln -s /usr/local/node/bin/cnpm /usr/bin/cnpm
+    ignore_errors: yes
+    tags: create_cnpm_bin_link
+
+  - name: get cnpm version
+    shell: cnpm -v
+    register: cnpm_version
+    tags: print_cnpm_version
+  
+  - name: print node and cnpm version
+    debug: 
+      msg: "{{ item }}"
+    with_items:
+      - "node version: {{ node_version.stdout_lines }}"
+      - "cnpm version: {{ cnpm_version.stdout_lines }}"
+    tags: print_version

@@ -1,0 +1,9 @@
+[salt-master]
+192.168.200.100 hostname=salt-master
+
+[salt-minion]
+192.168.200.101 hostname=salt-minion-01
+192.168.200.102 hostname=salt-minion-02
+
+[all:vars]
+master_ip="192.168.200.100"

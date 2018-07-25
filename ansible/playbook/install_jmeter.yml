@@ -1,0 +1,61 @@
+---
+- import_playbook: install_jdk.yml
+- import_playbook: install_tools_packages.yml
+
+- hosts: all
+  remote_user: root
+  gather_facts: true
+  tasks:
+  - name: create /data0/src/ dir
+    file:
+      path: /data0/src/
+      mode: 0755
+      state: directory
+    tags: create_tmp_dir
+
+  - name: create /usr/local/jmeter dir
+    file:
+      path: /usr/local/jmeter
+      mode: 0755
+      state: directory
+    tags: create_depe_dir
+
+  - name: rsync apache-jmeter-4.0.zip
+    copy:
+      src: files/apache-jmeter-4.0.zip
+      dest: /data0/src/
+      owner: root
+      group: root
+      mode: 0664
+    tags: rsync_jmeter_file
+ 
+  - name: unzip apache-jmeter-4.0.zip
+    shell: cd /data0/src/ && unzip -o apache-jmeter-4.0.zip -d /usr/local/jmeter/
+    tags: unzip_jmeter
+
+  - name: rsync jmeter_env.sh
+    copy:
+      src: files/jmeter_env.sh
+      dest: /data0/src/jmeter_env.sh
+      owner: root
+      group: root
+      mode: 0755
+    tags: rsync_jmeter_env_scripts
+
+  - name: jmeter env setup
+    shell: sh /data0/src/jmeter_env.sh
+    tags: config_jmeter_env
+
+  - name: rsync jmeter.properties
+    copy:
+      src: files/jmeter.properties.nmc
+      dest: /usr/local/jmeter/apache-jmeter-4.0/bin/jmeter.properties
+      owner: root
+      group: root
+      mode: 0664
+    tags: rsync_jmeter_conf
+
+  - name: start jmeter-server
+    #shell: cd  /usr/local/jmeter/apache-jmeter-4.0/bin/ && nohup sh jmeter-server &
+    shell: cd  /usr/local/jmeter/apache-jmeter-4.0/bin/ && nohup sh jmeter-server -Djava.rmi.server.hostname={{ ansible_eth0.ipv4.address }} &
+    tags: start_jmeter

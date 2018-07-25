@@ -1,0 +1,9 @@
+---
+- hosts: all
+  remote_user: root
+
+  tasks:
+  - name: simulate long running op, allow to run for 45 sec, fire and forget
+    command: /bin/sleep 15
+    async: 45
+    poll: 0

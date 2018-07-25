@@ -1,0 +1,4 @@
+---
+# file: /etc/ansible/group_vars/all
+# this is the site wide default
+REPO_LAN_IP: "10.0.0.23"

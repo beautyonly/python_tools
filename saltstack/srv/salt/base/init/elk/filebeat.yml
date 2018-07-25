@@ -1,0 +1,24 @@
+filebeat.prospectors:
+- input_type: log
+  paths:
+    - /var/log/messages
+  document_type: "messages"
+
+- input_type: log
+  paths:
+    - /var/log/secure
+  document_type: "secure"
+
+name: "118.89.54.135"
+tags: ["YTTX"]
+ignore_older: "24h"
+scan_frequency: "10s"
+tail_files: true
+harvester_buffer_size: 16384
+backoff: "1s"
+
+output.elasticsearch:
+  hosts: ["27.131.221.30:9200"]
+  index: filebeat-%{+yyyy.MM.dd}
+  template.enabled: true
+  worker: 4

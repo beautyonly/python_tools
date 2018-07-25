@@ -1,0 +1,24 @@
+--- 
+- hosts: all
+  remote_user: root
+  gather_facts: false
+  tasks:
+  - name: pip config dir
+    file:
+      path: ~/.pip
+      mode: 0755
+      state: directory
+    tags: create_pip_dir
+
+  - name: create pip config
+    copy:
+      src: files/pip.conf
+      dest: ~/.pip/pip.conf
+      owner: root
+      group: root
+      mode: 0664
+    tags: create_pip_config
+ 
+  - name: pip upgrade
+    shell: pip install pip --upgrade
+    tags: pip_upgrade

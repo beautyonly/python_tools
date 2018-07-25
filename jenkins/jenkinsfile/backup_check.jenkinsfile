@@ -1,0 +1,26 @@
+pipeline {
+    agent any
+	options {
+	    ansiColor('xterm')
+	    retry(3)
+	    timeout(activity: true, time: 10, unit: 'SECONDS')
+	}
+    triggers {
+        cron '0 6 * * *'
+    }
+    stages {
+        stage('check backup files') {
+            steps {
+				timestamps {
+					echo 'starting check backup files ...'
+					sh 'ssh 10.0.0.37 "cd /data0/ && sh backup_check.sh"'
+				}
+            }
+        }
+    }
+    post('send mail to manager'){
+        always {
+            emailext body: '$DEFAULT_CONTENT', subject: '$DEFAULT_SUBJECT', to: 'dongsheng.ma@lemongrassmedia.cn'
+        }
+    }
+}

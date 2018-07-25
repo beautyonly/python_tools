@@ -1,0 +1,3 @@
+---
+# file: /etc/ansible/group_vars/develop
+branch_name: develop

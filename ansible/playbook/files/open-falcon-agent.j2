@@ -1,0 +1,19 @@
+#!/bin/env bash
+
+#REPO_IP="10.0.0.23"
+#REPO_IP="115.159.89.176"
+wanip="{{ wan_ip }}"
+endpoint="{{ endpoint }}-SH-QCLOUD-${wanip}"
+
+mkdir -p /usr/local/open-falcon
+mkdir -p /data0/src
+
+cd /data0/src && rsync -avz {{ REPO_IP }}::DATA/devops/open-falcon/open-falcon-agent-v0.2.1.tar.gz .
+tar -zxf /data0/src/open-falcon-agent-v0.2.1.tar.gz -C /usr/local/open-falcon/
+cd /usr/local/open-falcon/agent/ && \cp config/cfg.json.template config/cfg.json
+sed -i "s/endpoint/${endpoint}/g" /usr/local/open-falcon/agent/config/cfg.json
+sed -i "s/wanip/${wanip}/g" /usr/local/open-falcon/agent/config/cfg.json
+
+sed -i '/open-falcon start agent/d' /etc/rc.local
+echo "cd /usr/local/open-falcon/ && ./open-falcon start agent >/dev/null 2&1" >>/etc/rc.local
+cd /usr/local/open-falcon/ && ./open-falcon start agent

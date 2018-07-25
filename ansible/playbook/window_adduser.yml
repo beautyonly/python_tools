@@ -1,0 +1,11 @@
+---
+- hosts: zjdfw-db-1-123.59.77.214
+  gather_facts: false
+
+  tasks:
+  - name: Add User
+    win_user:
+        name: ansible
+        password: "strong"
+        groups: ["Users"]
+    tags: Add User

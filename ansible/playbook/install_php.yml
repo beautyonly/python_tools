@@ -1,0 +1,52 @@
+--- 
+- hosts: all
+  remote_user: root
+  gather_facts: false
+  tasks:
+  - name: php prepare remove php71w-mysql Conflict with php71w-mysqlnd
+    yum: state=absent name={{item}}
+    with_items:
+      - php71w-mysql
+
+  - name: php install
+    yum: state=latest name={{item}}
+    with_items:
+      - php71w-devel.x86_64 
+      - php71w-cli.x86_64 
+      - php71w-common.x86_64 
+      - php71w-dba.x86_64 
+      - php71w-fpm.x86_64 
+      - php71w-mcrypt.x86_64 
+      - php71w-mysqlnd
+      - php71w-opcache.x86_64 
+      - php71w-pdo.x86_64 
+      - php71w-pear.noarch 
+      - php71w-pecl-apcu.x86_64 
+      - php71w-pecl-igbinary.x86_64 
+      - php71w-pecl-redis.x86_64
+
+  - name: install protobuf
+    shell: pecl install protobuf
+    tags: install_protobuf
+
+  - name: create /home/php_errorlog/
+    file:
+      path: /home/php_errorlog/
+      owner: nobody
+      group: nobody
+      mode: 0755
+      state: directory
+    tags: create_php_error_log_dir
+
+  - name: Make sure a service is running
+    systemd:
+      state: started
+      name: php-fpm
+    tags: php-fpm_service_running
+
+  - name: enable service and ensure it is not masked
+    systemd:
+      name: php-fpm
+      enabled: yes
+      masked: no
+    tags: php-fpm_service_start

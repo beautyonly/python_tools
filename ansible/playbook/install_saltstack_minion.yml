@@ -1,0 +1,40 @@
+--- 
+- hosts: all
+  remote_user: root
+  gather_facts: true
+  tasks:
+  - name: saltstack install
+    yum: state=latest name={{ item }}
+    with_items:
+      - salt-minion
+    tags: saltstack_minion_install
+
+  - name: rsync /etc/salt/minion
+    template:
+      src: files/salt/minion.j2
+      dest: /etc/salt/minion
+      owner: root
+      group: root
+      mode: 0664
+    notify:
+      - restart saltstack minion
+    tags: rsync_salt_minion_conf
+
+  - name: Make sure a service is running
+    systemd: 
+      state: started 
+      name: salt-minion
+    tags: salt_minion_service_running
+
+  - name: enable service etcd and ensure it is not masked
+    systemd:
+      name: salt-minion
+      enabled: yes
+      masked: no
+    tags: salt_minion_service_start
+
+  handlers:
+    - name: restart saltstack minion
+      service:
+        name: salt-minion
+        state: restarted

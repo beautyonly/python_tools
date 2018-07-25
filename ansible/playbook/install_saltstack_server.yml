@@ -1,0 +1,44 @@
+--- 
+- hosts: all
+  remote_user: root
+  gather_facts: false
+  tasks:
+  - name: saltstack install
+    yum: state=latest name={{ item }}
+    with_items:
+      - salt-master 
+      - salt-api
+      - salt-ssh
+      - salt-cloud
+      - salt-syndic
+    tags: saltstack_server_install
+
+  - name: rsync /etc/salt/master
+    template:
+      src: files/salt/master.j2
+      dest: /etc/salt/master
+      owner: root
+      group: root
+      mode: 0664
+    notify: 
+      - restart saltstack master
+    tags: rsync_salt_master_conf
+
+  - name: Make sure a service is running
+    systemd: 
+      state: started 
+      name: salt-master
+    tags: salt_master_service_running
+
+  - name: enable service etcd and ensure it is not masked
+    systemd:
+      name: salt-master
+      enabled: yes
+      masked: no
+    tags: salt_master_service_start
+
+  handlers:
+    - name: restart saltstack master
+      service:
+        name: salt-master
+        state: restarted

@@ -1,0 +1,17 @@
+--- 
+- hosts: all
+  remote_user: root
+  tasks:
+  - name: create open-falcon workdir
+    file:
+      path: /usr/local/open-falcon/
+      mode: 0755
+      state: directory
+
+  - name: rsync hostinfo.yml
+    template:
+      src: files/hostinfo.j2
+      dest: /usr/local/open-falcon/hostinfo.yml
+      owner: root
+      group: root
+      mode: 0664

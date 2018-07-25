@@ -1,0 +1,7 @@
+{
+  "enabled": true,
+  "mail_smtp_host": "smtp.exmail.qq.com:25",
+  "mail_smtp_user": "xx",
+  "mail_smtp_pass": "xxx",
+  "mail_to": "xxx"
+}

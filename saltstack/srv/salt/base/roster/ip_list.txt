@@ -1,0 +1,2 @@
+ass.qyz.xxx.com:1.1.1.1
+t1.qyz.xxx.com:1.1.1.1

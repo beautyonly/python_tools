@@ -1,0 +1,8 @@
+---
+- import_playbook: hostname_setup.yml
+- import_playbook: install_yum.yml
+- import_playbook: install_pip.yml
+- import_playbook: install_rsync.yml
+- import_playbook: rsync_sshkey.yml
+- import_playbook: limits_setup.yml
+

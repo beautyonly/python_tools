@@ -1,0 +1,34 @@
+--- 
+- hosts: all
+  remote_user: root
+  gather_facts: false
+  tasks:
+  - name: yum-utils install
+    yum: state=latest name=yum-utils
+    tags: install_yum_utils
+
+  - name: add repo
+    shell: yum-config-manager --enable rhui-REGION-rhel-server-extras rhui-REGION-rhel-server-optional
+    tags: add_repo
+
+  - name: backup nginx conf files
+    shell: \cp /etc/nginx/nginx.conf{,.`date +%Y%m%d%H%M%S`}
+    tags: backup_nginx_config
+
+  - name: install python2-certbot-nginx
+    yum: state=latest name=python2-certbot-nginx
+    tags: install_python2_certbot_nginx
+    
+  - name: get free ssl
+    shell: certbot --nginx -d {{ domains_name }} -m dongsheng.ma@lemongrassmedia.cn
+    tags: install_free_ssl
+  
+  # create a job that ssl renew
+  - name: add crontab job to certbot renew
+    cron:
+      name: lets-encrypt free ssl renew
+      minute: "0"
+      hour: "0,12"
+      user: root
+      job: "python -c 'import random; import time; time.sleep(random.random() * 3600)' && certbot renew"
+    tags: add_free_ssl_renew_job

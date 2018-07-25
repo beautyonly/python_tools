@@ -1,0 +1,18 @@
+--- 
+- hosts: all
+  remote_user: root
+  vars:
+    connections : "1024"
+  tasks:
+  - name: install nginx
+    action: yum name=nginx state=latest
+  
+  - name: write nginx.conf
+    action: template src=nginx.conf dest=/etc/nginx/nginx.conf
+    notify:
+     - restart nginx
+
+  handlers:
+  - name: restart nginx
+    action: service name=nginx state=restarted
+

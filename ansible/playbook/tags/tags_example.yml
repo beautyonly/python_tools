@@ -1,0 +1,18 @@
+---
+- hosts: all
+  remote_user: root
+  gather_facts: false
+
+  tasks:
+      - yum: name={{ item }} state=installed
+        with_items:
+           - httpd
+           - memcached
+        tags:
+           - packages
+
+      - template: src=templates/src.j2 dest=/etc/foo.conf
+        tags:
+           - configuration
+# ansible-playbook playbook/tags/tags_example.yml --skip-tags "packages"
+# ansible-playbook playbook/tags/tags_example.yml --tags "configuration,packages"

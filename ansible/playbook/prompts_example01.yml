@@ -1,0 +1,36 @@
+---
+- hosts: all
+  remote_user: root
+
+  vars:
+    type_01: "camelot"
+
+  vars_prompt:
+    - name: "name"
+      prompt: "what is your name?"
+    - name: "quest"
+      prompt: "what is your quest?"
+    - name: "favcolor"
+      prompt: "what is your favorite color?"
+
+  vars_prompt:
+    - name: "release_version"
+      prompt: "Product release version"
+      default: "1.0"
+
+  vars_prompt:
+    - name: "some_password"
+      prompt: "Enter password"
+      private: yes
+
+    - name: "release_version"
+      prompt: "Product release version"
+      private: no
+
+#  vars_prompt:
+#    - name: "my_password2"
+#      prompt: "Enter password2"
+#      private: yes
+#      encrypt: "sha512_crypt"
+#      confirm: yes
+#      salt_size: 7

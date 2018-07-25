@@ -1,0 +1,42 @@
+---
+- hosts: all
+  remote_user: root
+  gather_facts: false
+  tasks:
+  - name: bind install
+    yum: state=latest name=bind
+    tags: install_bind_packages
+
+  - name: git clone tools repo
+    git:
+      repo: 'https://github.com/molin1987/DNS.git'
+      dest: /data0/src/dns
+      version: master
+      accept_hostkey: yes
+      update: yes
+    tags: git_clone_config_files
+
+  - name: rsync config files
+    shell: \cp /data0/src/dns/named.conf /etc/named.conf && chmod 640 /etc/named.conf && chown -R root.named /etc/named.conf
+    tags: rsync_config_files
+
+  - name: rsync /etc/named.rfc1912.zones
+    shell: \cp /data0/src/dns/named.rfc1912.zones/named.rfc1912.zones /etc/named.rfc1912.zones && chmod 640 /etc/named.rfc1912.zones && chown -R root.named /etc/named.rfc1912.zones
+    tags: rsync_zones_files
+
+  - name: rsync named files
+    shell: \cp -rf /data0/src/dns/named/* /var/named/ && chmod 640 /var/named/{*.b,*.arpa} && chown -R root.named /var/named/{*.b,*.arpa}
+    tags: rsync_zones_files
+
+  - name: make sure a service is running
+    systemd: state=started name=named
+    tags: service_start
+
+  - name: enable service and ensure it is not masked
+    systemd:
+      name: named
+      enabled: yes
+      masked: no
+    tags: service_boot_start
+
+

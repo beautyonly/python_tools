@@ -1,0 +1,54 @@
+#!/bin/sh
+REPOS="$1"
+TXN="$2"
+
+# svnlook command
+SVNLOOK=/usr/bin/svnlook
+
+# file filter: we only allow commit .c && .h files.
+FILTER='\.(c|h|txt|doc|rar|gz|zip|tar|obj|o)$'
+
+# max file size in bytes after commit 10M.
+MAX_SIZE=10240
+
+# max change per one commit
+MAX_CHANGE_LINES=50
+
+LOGMSG=$($SVNLOOK log -t $TXN $REPOS | wc -c )
+
+if [ "$LOGMSG" -lt 9 ];
+then
+	echo "commit log message cann't be empty ! you must input some message" 1>&2
+        exit 1
+fi
+
+files=$($SVNLOOK changed -t $TXN $REPOS | awk '{print $2}')
+
+# check 
+for f in $files
+do
+    # check file type
+    if echo $f | grep -Eq $FILTER ; then
+        # valid file
+        :
+    else
+        echo "File $f is not a c|h|txt|doc|rar|gz|zip|tar|obj|o file" >> /dev/stderr
+        exit 1
+    fi
+
+    # check file size
+    filesize=$($SVNLOOK cat -t $TXN $REPOS $f | wc -c)
+    if [ $filesize -gt $MAX_SIZE ] ; then
+        echo "File $f is too large (must <= $MAX_SIZE)" >> /dev/stderr
+        exit 1
+    fi
+
+    # check change lines
+    changelines=$($SVNLOOK diff -t $TXN $REPOS $f | grep -E '^(\+|-)' | wc -l)
+    if [ $changelines -gt $MAX_CHANGE_LINES ] ; then
+        echo "File $f changes too much ($changelines lines, must <= $MAX_CHANGE_LINES)" >> /dev/stderr
+        exit 1
+    fi
+done
+
+exit 0

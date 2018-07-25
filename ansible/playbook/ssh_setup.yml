@@ -1,0 +1,15 @@
+---
+- hosts: all
+  remote_user: root
+  gather_facts: false
+  tasks:
+    - name: Modify ssh port 69410
+      lineinfile:
+        dest: /etc/ssh/{{ item }}
+        regexp: '^Port 69410'
+        insertafter: '#Port 22'
+        line: 'Port 69410'
+      with_items:
+        - sshd_config
+        - ssh_config
+      tags: sshport

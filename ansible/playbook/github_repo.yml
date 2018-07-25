@@ -1,0 +1,21 @@
+--- 
+- hosts: all
+  remote_user: root
+  gather_facts: false
+  tasks:
+  - name: rsync tools-deploy-key
+    copy:
+      src: files/tools-deploy-key
+      dest: ~/.ssh/tools-deploy-key
+      owner: root
+      group: root
+      mode: 0600
+
+  - name: git clone tools repo
+    git:
+      repo: 'git@github.com:mds1455975151/tools.git'
+      dest: /srv/checkout
+      version: develop
+      key_file: ~/.ssh/tools-deploy-key
+      accept_hostkey: yes
+      update: yes

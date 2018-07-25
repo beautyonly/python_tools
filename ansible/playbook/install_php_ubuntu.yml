@@ -1,0 +1,29 @@
+--- 
+- import_playbook: install_tools_packages.yml
+
+- hosts: all
+  remote_user: root
+  gather_facts: false
+  tasks:
+  - name: add php repository
+    apt_repository: repo=ppa:ondrej/php
+
+  - name: php install
+    apt: state=latest name={{item}}
+    with_items:
+      - php7.1
+      - php7.1-cli
+      - php7.1-common
+      - php7.1-dba
+      - php7.1-fpm
+      - php7.1-mcrypt
+      - php7.1-mysql
+      - php7.1-opcache
+      - php7.1-xml
+      - php7.1-curl
+      - php7.1-gd
+      - php7.1-mbstring
+      - php-redis 
+      - php-igbinary 
+      - php-pear 
+      - php-apcu

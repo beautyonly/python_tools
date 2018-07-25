@@ -1,0 +1,50 @@
+--- 
+- hosts: all
+  remote_user: root
+  gather_facts: false
+  tasks:
+  #- name:  Check whether libiconv is installed
+  #  shell: ls /usr/local/lib/libiconv.so
+  #  register: libiconv_result
+
+  - name: install libiconv-1.14.tar.gz
+    shell: cd /data0/src/ && \
+           rsync -avz {{ REPO_IP }}::DATA/devops/packages/libiconv-1.14.tar.gz . && \ 
+           tar zxf libiconv-1.14.tar.gz && \
+           cd libiconv-1.14 && \
+           ./configure && \
+           make && \
+           make install
+  #  when: libiconv_result.stdout == "2"
+    tags: install_libiconv
+
+  #- name:  Check whether libdatrie is installed
+  #  shell: ls /usr/local/libdatrie/
+  #  register: libdatrie_result
+
+  - name: install libdatrie-0.2.4.tar.gz
+    shell: cd /data0/src/ && \
+           rsync -avz {{ REPO_IP }}::DATA/devops/packages/libdatrie-0.2.4.tar.gz . && \
+           tar zxf libdatrie-0.2.4.tar.gz && \
+            cd libdatrie-0.2.4 && \
+            ./configure --prefix=/usr/local/libdatrie/ && \
+            make ICONV_LIBS='/usr/local/lib/libiconv.so' && \
+            make install
+  #  when: libdatrie_result.stdout == "2"
+    tags: install_libdatrie
+
+  #- name:  Check whether php-ext-trie-filter-php7 is installed
+  #  shell: ls -al /usr/lib64/php/modules/trie_filter.so
+  #  register: php_ext_trie_filter_php7_result
+
+  - name: install php-ext-trie-filter-php7.zip
+    shell: LANG=C ; cd /data0/src/ && \
+           rsync -avz {{ REPO_IP }}::DATA/devops/packages/php-ext-trie-filter-php7.zip . && \
+           unzip -oq php-ext-trie-filter-php7.zip && \
+           cd php-ext-trie-filter-php7 && \
+           phpize && \
+           ./configure --with-php-config=/usr/bin/php-config --with-trie_filter=/usr/local/libdatrie/ && \
+           make && \
+           make install
+  # when: php_ext_trie_filter_php7_result.stdout == "2"
+    tags: install_php-ext-trie-filter-php7

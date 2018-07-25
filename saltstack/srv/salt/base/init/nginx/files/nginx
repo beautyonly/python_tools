@@ -1,0 +1,75 @@
+#!/bin/bash 
+# 
+# Init file for nginx server daemon 
+# 
+# chkconfig: 234 99 99 
+# description: nginx server daemon 
+# 
+# source function library 
+. /etc/rc.d/init.d/functions 
+# pull in sysconfig settings 
+[ -f /etc/sysconfig/nginx ] && . /etc/sysconfig/nginx 
+RETVAL=0 
+prog="nginx" 
+PAT=/usr/local/nginx 
+NGINXD=/usr/local/nginx/sbin/nginx 
+PID_FILE=/usr/local/nginx/nginx.pid 
+start() 
+{ 
+	echo -n $"Starting $prog: " 
+	$NGINXD 2>/dev/null $OPTIONS && success || failure 
+	RETVAL=$? 
+	[ "$RETVAL" = 0 ] && touch /var/lock/subsys/nginx 
+	echo 
+} 
+stop() 
+{ 
+	echo -n $"Shutting down $prog: " 
+	killproc nginx 
+	RETVAL=$? 
+	echo 
+	[ $RETVAL -eq 0 ] && rm -f /var/lock/subsys/nginx 
+	return $RETVAL 
+} 
+reload() 
+{ 
+	echo -n $"Reloading nginx: " 
+	killproc nginx -HUP 
+	RETVAL=$? 
+	echo 
+	return $RETVAL 
+} 
+check()
+{
+	echo -n $"check nginx conf: "
+	$NGINXD -t -c /usr/local/nginx/conf/nginx.conf
+	RETVAL=$?
+	echo 
+        return $RETVAL	
+}
+case "$1" in 
+start) 
+	start 
+	;;
+stop) 
+	stop 
+	;;
+restart) 
+	stop 
+	start 
+	;;
+reload) 
+	reload 
+	;;
+check)
+	check
+	;;
+status) 
+	status -p $PID_FILE nginx 
+	RETVAL=$? 
+	;;
+*) 
+	echo $"Usage: $0 {start|stop|restart|reload|status}" 
+	RETVAL=1 
+esac 
+exit $RETVAL

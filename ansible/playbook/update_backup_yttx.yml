@@ -1,0 +1,21 @@
+---
+- hosts: yttx-jp_s3_119.28.17.38
+  remote_user: root
+  tasks:
+  - name: rsync yttx_backup_v3.0.sh
+    copy: src=/srv/salt/base/kaixin/yttx/db/yttx_backup_v3.0.sh dest=/data0/yttx_backup_v3.0.sh owner=root group=root mode=0755
+
+  - name: rsync xtra_backup_2.0.sh
+    copy: src=/srv/salt/base/kaixin/yttx/db/xtra_backup_2.0.sh dest=/data0/xtraback_backup/xtra_backup_2.0.sh owner=root group=root mode=0755
+  
+  - name: del old crontab echo hostname notes
+    lineinfile: dest=/etc/profile state=absent regexp='^# echo IP in bash by mads at'
+
+  - name: del old crontab echo hostname IP
+    lineinfile: dest=/etc/profile state=absent regexp='^IP='
+
+  - name: del old crontab echo hostname PS1
+    lineinfile: dest=/etc/profile state=absent regexp='^PS1='
+
+  - name: add crontab clean_game_log.sh
+    shell: echo -e "# echo IP in bash by mads at `date +%Y%m%d`\nIP=\`awk -F '[-]+' 'NR==1{print \$NF}' /usr/local/workspace/monitor_role.txt\`\nPS1='[\u@\$IP \W]\\$ '">>/etc/profile

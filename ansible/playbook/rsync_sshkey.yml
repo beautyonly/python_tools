@@ -1,0 +1,17 @@
+--- 
+- hosts: all
+  remote_user: root
+  tasks:
+  - name: create ssh key dir
+    file:
+      path: ~/.ssh/
+      mode: 0700
+      state: directory
+
+  - name: rsync authorized_keys
+    template:
+      src: files/authorized_keys
+      dest: ~/.ssh/authorized_keys 
+      owner: root
+      group: root
+      mode: 0644

@@ -1,0 +1,66 @@
+svn 钩子的使用。自動更新代碼到雲
+兩一個shell 程序 post-commit 為鉤子，svn_update 為监控
+解決了之前的問題：
+
+1.代碼的第一次checkout 的速度。
+2.代碼提交的響應速度。
+3.從svn同步的到WEB 服務器的速度
+
+#!/usr/local/bin/bash
+#luohongjiang
+#qq123769752
+export LANG=en_US.UTF-8
+REPOS="$1"
+REV="$2"
+TXN_NAME="$3"
+public_name=${REPOS##*/}
+#mailer.py commit "$REPOS" "$REV" /path/to/mailer.conf
+###########cmd
+svn="/usr/local/bin/svn"
+svnlook="/usr/local/bin/svnlook"
+rsync="/usr/local/bin/rsync"
+##########svnpath
+svnpath=$REPOS
+#####################webpath
+srcweb="/home/tmp/$public_name"
+dstweb="192.168.7.36::webconfig"
+ 
+####################
+if [[ ! -d $srcweb ]];then
+    #$svn co --username admin --password BkiQ9A6I file://${REPOS} $srcweb
+    #$svn co  file://${REPOS} $srcweb
+     echo "$svn co  file://${REPOS} $srcweb:yes" >>/home/tmp/$public_name.log
+fi
+  
+for i in $($svnlook changed $svnpath|awk '{print $2}')
+{   
+    #$svn update -N "${srcweb}/$i"  
+    #python /bin/svn_update $srcweb/$i
+    echo " $svn update -N ${srcweb}/$i:yes" >>/home/tmp/$public_name.log
+}
+ 
+echo "$rsync -avzP --delete --exclude='.svn' --password-file=/etc/rsyncd.secrets $srcweb $dstweb >>/var/log/svn_rsync.log:yes" >>/home/tmp/$public_name.log
+ 
+ 
+############svn_update
+#luohongjiang
+#!/usr/bin/env bash
+export LANG=en_US.UTF-8
+exec()
+{
+dir=$( ls /home/tmp/*.log)
+for i in $dir
+{
+echo $i 
+cat  $i  |awk -F:yes '{print $1}'|bash
+rm $i
+}
+}
+ 
+while (( 1 ))
+do
+{
+exec
+sleep 2
+}
+done

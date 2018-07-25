@@ -1,0 +1,11 @@
+--- 
+- hosts: all
+  remote_user: root
+  gather_facts: false
+  tasks:
+  - name: create /data0/src/
+    file:
+      path: /data0/src/
+      mode: 0755
+      state: directory
+    tags: create_work_dir

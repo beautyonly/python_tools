@@ -1,0 +1,67 @@
+---
+- hosts: all
+  become: true
+  become_user: root
+  remote_user: root
+  gather_facts: true
+  tasks:
+  - name: tools packages install
+    yum: state=latest name={{ item }}
+    with_items:
+      #- initscripts 
+      #- fontconfig
+      - urw-fonts
+      #- freetype-demos
+      #- freetype-devel
+    tags: install_tools_packages
+
+  - name: wget grafana-5.2.1-1.x86_64.rpm
+    get_url: url=https://mirrors.tuna.tsinghua.edu.cn/grafana/yum/el7/grafana-5.2.1-1.x86_64.rpm dest=/data0/src/
+    tags: wget_grafana_packages
+
+  - name: install grafana rpm packages
+    shell: rpm -ivh /data0/src/grafana-5.2.1-1.x86_64.rpm
+    ignore_errors: yes
+    tags: install_grafana_packages
+    
+  - name: mkdir grafana data and log dir
+    file:
+      path: /data0/grafana/{{ item }}
+      owner: grafana
+      group: grafana
+      mode: 0755
+      state: directory
+    with_items:
+      - data
+      - logs
+    tags: create_grafana_work_dir
+
+  - name: rsync /etc/grafana/grafana.ini
+    template:
+      src: files/grafana/{{ item }}.j2
+      dest: /etc/grafana/{{ item }}
+      owner: root
+      group: grafana
+      mode: 0664
+    with_items:
+      - grafana.ini
+      - ldap.toml
+    notify: restart grafana-server
+    tags: rsync_grafana_conf
+
+  - name: make sure a service is running
+    systemd: 
+      state: started 
+      name: grafana-server
+    tags: grafana_service_running
+
+  - name: enable service grafana and ensure it is not masked
+    systemd:
+      name: grafana-server
+      enabled: yes
+      masked: no
+    tags: grafana_service_start
+
+  handlers:
+    - name: restart grafana-server
+      service: name=grafana-server enabled=yes state=restarted

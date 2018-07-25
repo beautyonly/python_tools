@@ -1,0 +1,15 @@
+include:
+  - init.dns
+  - init.yum-repo
+  - init.firewall
+  - init.history
+  - init.limit
+  - init.ntp-client
+  - init.pkg-base
+  - init.selinux
+  - init.ssh
+  - init.sysctl
+  - init.thin
+  - init.tty-timeout
+  - init.tty-style
+  - init.user-www

@@ -1,0 +1,36 @@
+--- 
+- hosts: all
+  remote_user: root
+  tasks:
+  - name: create backup repo dir
+    file:
+      path: /etc/yum.repos.d/repo/
+      mode: 0755
+      state: directory
+    tags: create_backup_repo_dir
+
+  - name: backup repo
+    shell: cd /etc/yum.repos.d/ && mv *.repo /etc/yum.repos.d/repo/
+    ignore_errors: yes
+    tags: backup_repo_file
+
+  - name: rsync local.repo
+    template:
+      src: files/local.repo
+      dest: /etc/yum.repos.d/local.repo
+      owner: root
+      group: root
+      mode: 0644
+    tags: rsync_repo_file
+
+  - name: rsync aliyun repo
+    template:
+      src: files/{{ item }}
+      dest: /etc/yum.repos.d/{{ item }}
+      owner: root
+      group: root
+      mode: 0644
+    with_items:
+      - Centos-7.repo
+      - epel-7.repo
+    tags: rsync_repo_file

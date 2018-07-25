@@ -1,0 +1,12 @@
+---
+# author: lework
+
+iptables_allowed_tcp_ports: ''
+iptables_allowed_udp_ports: ''
+iptables_deny_tcp_ports: ''
+iptables_deny_udp_ports: ''
+iptables_forwarded_tcp_ports: ''
+iptables_forwarded_udp_ports: ''
+iptables_additional_rules: ''
+iptables_action: 'insert'
+iptables_state: 'present'

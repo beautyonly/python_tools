@@ -1,0 +1,28 @@
+--- 
+- import_playbook: install_nginx.yml
+
+- hosts: all
+  remote_user: root
+  gather_facts: false
+  tasks:
+  - name: pip install ansible-cmdb
+    pip:
+      name: ansible-cmdb
+    with_items:
+      - ansible-cmdb
+    tags: install_ansible_cmdb
+
+  - name: create ansible-cmdb data dir
+    file:
+      path: /usr/share/nginx/html/cmdb
+      mode: 0755
+      state: directory
+    tags: create_data_dir
+
+  - name: generate data
+    shell: ansible -m setup --tree /usr/share/nginx/html/cmdb/ all
+    tags: ansible_cmdb_generate_data
+
+  - name: print data to html
+    shell: ansible-cmdb /usr/share/nginx/html/cmdb/ > /usr/share/nginx/html/cmdb/index.html
+    tags: ansible_cmdb_print_html

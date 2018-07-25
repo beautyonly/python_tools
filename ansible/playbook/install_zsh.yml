@@ -1,0 +1,14 @@
+---
+- import_playbook: install_yum.yml
+
+- hosts: all
+  remote_user: root
+  gather_facts: false
+  tasks:
+  - name: install zsh
+    yum: state=latest name=zsh
+    tags: install_zsh
+
+  - name: install oh-my-zsh
+    shell: sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+    tags: install_oh_my_zsh

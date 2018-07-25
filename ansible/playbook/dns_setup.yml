@@ -1,0 +1,17 @@
+---
+- hosts: all
+  remote_user: root
+  vars:
+    author: madongsheng
+    resolvers:
+      - 202.106.0.20
+      - 8.8.8.8
+
+  tasks:
+  - name: setup /etc/resolv.conf
+    template: src=files/resolv.j2 dest=/etc/resolv.conf mode=0444
+    tags: setup_dns
+
+  - name: Fetch node /etc/resolv.conf file
+    fetch: src=/etc/resolv.conf dest=/tmp/fetchfile
+    tags: fetch_dns_conf

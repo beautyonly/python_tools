@@ -1,0 +1,15 @@
+--- 
+- hosts: all
+  remote_user: root
+  gather_facts: true
+  tasks:
+  - name: RedHat os tools packages install
+    include: "RedHat.yml"
+    when:
+      - ansible_os_family == "RedHat"
+
+  - name: Ubuntu os tools packages install
+    include: "Ubuntu.yml"
+    when:
+      - ansible_os_family == "Debian"
+  

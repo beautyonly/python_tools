@@ -1,0 +1,9 @@
+---
+- hosts: all
+  remote_user: root
+  gather_facts: false
+  tasks:
+  - name: restart filebeat
+    shell: /etc/init.d/filebeat stop && /etc/init.d/filebeat start
+    async: 10
+    poll: 0

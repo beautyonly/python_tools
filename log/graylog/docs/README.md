@@ -1,0 +1,79 @@
+# graylog文档翻译
+- 官网文档:http://docs.graylog.org/en/latest/
+
+# 内容
+- [Architectural considerations 架构](https://github.com/mds1455975151/tools/blob/master/log/graylog/docs/01-architecture.md)
+  - Minimum setup 最小配置
+  - Bigger production setup 生产配置
+  - Graylog Architecture Deep Dive 架构深入研究
+- [Getting Started 入门](https://github.com/mds1455975151/tools/blob/master/log/graylog/docs/02-getting_started.md)
+  - Download Graylog
+  - Import the VM
+  - Start the VM
+  - Connect to the Web Console
+  - Explore Graylog
+  - Get Messages In
+  - Check If You Have Messages
+  - If You Don’t Have Messages
+  - Create Your Dashboard
+  - Get Alerted
+- [Installing Graylog](https://github.com/mds1455975151/tools/blob/master/log/graylog/docs/03-installation.md)
+  - Virtual Machine Appliances
+  - Operating System Packages
+    - Ubuntu installation
+    - Debian installation
+    - CentOS installation
+    - SLES installation
+  - Chef, Puppet, Ansible
+  - Docker
+  - Vagrant
+  - OpenStack
+  - Amazon Web Services
+  - Microsoft Windows
+  - Manual Setup
+- [Upgrading Graylog](https://github.com/mds1455975151/tools/blob/master/log/graylog/docs/06-upgrade.md)
+- [Configuring Graylog](https://github.com/mds1455975151/tools/blob/master/log/graylog/docs/07-configuration.md)
+  - [server.conf](https://github.com/mds1455975151/tools/blob/master/log/graylog/docs/07-configuration-server.conf.md)
+  - [The graylog-ctl script](https://github.com/mds1455975151/tools/blob/master/log/graylog/docs/07-configuration-graylog_ctl.md)
+  - [Web interface](https://github.com/mds1455975151/tools/blob/master/log/graylog/docs/07-configuration-web_interface.md)
+  - [Load balancer integration](https://github.com/mds1455975151/tools/blob/master/log/graylog/docs/07-configuration-load_balancers.md)
+  - [Using HTTPS](https://github.com/mds1455975151/tools/blob/master/log/graylog/docs/07-configuration-https.md)
+  - [Multi-node Setup](https://github.com/mds1455975151/tools/blob/master/log/graylog/docs/07-multinode_setup.md)
+  - [Elasticsearch](https://github.com/mds1455975151/tools/blob/master/log/graylog/docs/07-elasticsearch.md)
+  - [Index model](https://github.com/mds1455975151/tools/blob/master/log/graylog/docs/07-index_model.md)
+  - [Backup](https://github.com/mds1455975151/tools/blob/master/log/graylog/docs/07-backup.md)
+  - [Default file locations](https://github.com/mds1455975151/tools/blob/master/log/graylog/docs/07-file_location.md)
+  - [Graylog REST API](https://github.com/mds1455975151/tools/blob/master/log/graylog/docs/07-rest_api.md)
+- [Securing Graylog](https://github.com/mds1455975151/tools/blob/master/log/graylog/docs/securing.md)
+- [Sending in log data](https://github.com/mds1455975151/tools/blob/master/log/graylog/docs/sending_data.md)
+- [Graylog Collector Sidecar]()
+- [Graylog Collector (deprecated)]()
+- [Searching]()
+- [Streams]()
+- [Alerts]()
+- [Dashboards]()
+- [Extractors]()
+- [Processing Pipelines]()
+- [Lookup Tables]()
+- [Message rewriting with Drools]()
+- [Blacklisting]()
+- [Geolocation]()
+- [Indexer failures]()
+- [Users and Roles]()
+- [Plugins]()
+- [External dashboards]()
+- [Graylog Marketplace]()
+- [Frequently asked questions]()
+- [GELF]()
+- [The thinking behind the Graylog architecture and why it matters to you]()
+- [Changelog]()
+- [GRAYLOG ENTERPRISE]()
+
+- [Introduction]()
+- [Setup]()
+- [Archiving]()
+- [Audit Log]()
+- [Changelog]()
+
+# FQA
+# 参考资料

@@ -1,0 +1,19 @@
+---
+- import_playbook: install_pip.yml
+
+- hosts: all
+  remote_user: root
+  gather_facts: true
+  tasks:
+  - name: install coscmd
+    shell: pip install coscmd --ignore-installed requests
+    tags: install_coscmd
+
+  - name: rsync coscmd conf file
+    copy:
+      src: files/cos.conf
+      dest: ~/.cos.conf
+      owner: root
+      group: root
+      mode: 0664
+    tags: rsync_coscmd_config_file

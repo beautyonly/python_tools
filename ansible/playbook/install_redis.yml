@@ -1,0 +1,32 @@
+---
+- hosts: all
+  remote_user: root
+  gather_facts: false
+  tasks:
+  - name: rsysc redis-3.2.10-2.el7.x86_64.rpm
+    copy:
+      src: files/redis-3.2.10-2.el7.x86_64.rpm
+      dest: /data0/src/redis-3.2.10-2.el7.x86_64.rpm
+      owner: root
+      group: root
+      mode: 0664
+    
+  - name: jemalloc install
+    yum: state=latest name=jemalloc
+
+  - name: install redis-3.2.10-2.el7.x86_64.rpm
+    shell: rpm -ivh /data0/src/redis-3.2.10-2.el7.x86_64.rpm
+
+  - name: change password
+    shell: sed -i.bak "s/# requirepass foobared/requirepass j!7Fv#QXc473C2c6/g" /etc/redis.conf
+
+  - name: Make sure a service is running
+    systemd: state=started name=redis
+
+  - name: enable service httpd and ensure it is not masked
+    systemd:
+      name: redis
+      enabled: yes
+      masked: no
+
+

@@ -1,0 +1,23 @@
+--- 
+- hosts: openstack
+  remote_user: ansible
+  sudo: yes
+  tasks:
+  - name: sync time setup 
+    shell: /usr/sbin/ntpdate time.windows.com
+    tags: 
+      - sync_time
+
+  - name: sync time crontab
+    cron: 
+      name='ntp setup by mads' 
+      minute=*/5
+      hour=*
+      day=*
+      month=*
+      weekday=*
+      job='/usr/sbin/ntpdate time.windows.com'
+    tags: 
+      - sync_time_crontab
+
+#date;crontab -l

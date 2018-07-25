@@ -1,0 +1,20 @@
+---
+- hosts: all
+  remote_user: root
+  gather_facts: false
+  tasks:
+  - name: rsysc config file
+    copy:
+      src: files/rsyncd.conf
+      dest: /etc/rsyncd.conf
+      owner: root
+      group: root
+      mode: 0664
+
+  - name: rsync start process
+    shell: /usr/bin/rsync --daemon
+
+  - name: rsync add /etc/rc.local
+    lineinfile:
+      path: /etc/rc.local
+      line: /usr/bin/rsync --daemon >/dev/null 2>&1

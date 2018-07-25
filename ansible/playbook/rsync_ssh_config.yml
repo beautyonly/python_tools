@@ -1,0 +1,44 @@
+--- 
+- hosts: all
+  remote_user: root
+  gather_facts: false
+  tasks:
+  - name: create ssh key dir
+    file:
+      path: ~/.ssh/
+      mode: 0700
+      state: directory
+    tags: create_ssh_key_dir
+
+  - name: rsync ~/.ssh/config
+    template:
+      src: files/config
+      dest: ~/.ssh/config
+      owner: root
+      group: root
+      mode: 0644
+    tags: rsync_ssh_config
+
+  - name: rsync authorized_keys
+    template:
+      src: files/authorized_keys
+      dest: ~/.ssh/authorized_keys 
+      owner: root
+      group: root
+      mode: 0644
+    tags: rsync_authorized_keys
+
+  - name: rsync app deploy-key
+    template:
+      src: files/{{ item}}
+      dest: ~/.ssh/{{ item}}
+      owner: root
+      group: root
+      mode: 0600
+    with_items:
+      - loveworldserver-deploy-key
+      - loveserver-deploy
+      - loveserver-mirror-deploy
+      - lovejob-deploy
+      - loveauth-deploy
+    tags: rsync_app_deploy-key

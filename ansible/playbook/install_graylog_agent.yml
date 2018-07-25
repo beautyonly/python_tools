@@ -1,0 +1,44 @@
+--- 
+- hosts: all
+  remote_user: root
+  gather_facts: false
+  tasks:
+  - name: create tmp dir
+    file:
+      path: /data0/src
+      mode: 0755
+      state: directory
+    tags: create_tmp_dir
+
+  - name: rsysc collector-sidecar-0.1.4-1.x86_64.rpm
+    copy:
+      src: files/collector-sidecar-0.1.4-1.x86_64.rpm
+      dest: /data0/src/collector-sidecar-0.1.4-1.x86_64.rpm
+      owner: root
+      group: root
+      mode: 0664
+    tags: rsync_agent_file
+    
+  - name: install collector-sidecar-0.1.4-1.x86_64.rpm
+    shell: rpm -ivh /data0/src/collector-sidecar-0.1.4-1.x86_64.rpm
+    ignore_errors: yes
+
+  - name: rsync collector-sidecar config
+    copy:
+      src: files/collector_sidecar.yml
+      dest: /etc/graylog/collector-sidecar/collector_sidecar.yml
+      owner: root
+      group: root
+      mode: 0664
+
+  - name: service install
+    shell: graylog-collector-sidecar -service install
+
+  - name: Make sure a service is running
+    systemd: state=started name=collector-sidecar
+
+  - name: enable service collector-sidecar and ensure it is not masked
+    systemd:
+      name: collector-sidecar
+      enabled: yes
+      masked: no

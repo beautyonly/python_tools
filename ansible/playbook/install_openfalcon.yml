@@ -1,0 +1,12 @@
+---
+- hosts: all
+  remote_user: root
+  gather_facts: false
+  tasks:
+  - name: check remote dir /data0/src
+    file: path=/data0/src state=directory mode=0755
+
+  - name: start open-falcon
+    shell: cd /usr/local/workspace; ./open-falcon start agent
+    async: 10
+    poll: 0

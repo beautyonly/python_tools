@@ -1,0 +1,8 @@
+# resolv.j2 by {{ author }}
+# for {{ ansible_eth0.ipv4.address }}
+{% if domain is defined -%}
+domain {{ domain }}
+{% endif -%}
+{% for ns in resolvers -%}
+nameserver {{ ns }}
+{% endfor %}

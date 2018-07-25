@@ -1,0 +1,23 @@
+--- 
+- import_playbook: create_work_dir.yml
+
+- hosts: all
+  remote_user: root
+  gather_facts: false
+  tasks:
+  - name: create /usr/local/smartping
+    file:
+      path: /usr/local/smartping
+      mode: 0755
+      state: directory
+    tags: create_smartping_dir
+
+  - name: install smartping
+    shell: cd /data0/src && \
+           rsync -avz {{REPO_IP}}::DATA/devops/packages/smartping-v0.5.0.tar.gz . && \
+           tar -zxf smartping-v0.5.0.tar.gz -C /usr/local/smartping
+    tags: install_smartping
+
+  - name: start smartping
+    shell: cd /usr/local/smartping/ && nohup ./control start &
+    tags: start_smartping

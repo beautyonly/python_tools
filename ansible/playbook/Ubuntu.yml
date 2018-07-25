@@ -1,0 +1,46 @@
+--- 
+# Tasks specific for Ubuntu systems
+
+- name: Ubuntu os tools packages install
+  apt: state=latest pkg={{ item }}
+  with_items:
+   - bzip2
+   - curl
+   - diffutils
+   - dos2unix
+   - gawk
+   - gcc
+   - make
+   - git
+   - grep
+   - gzip
+   - zip
+   - htop
+   - httping
+   - iftop
+   - iotop
+   - less
+   - lftp
+   - nfs-common
+   - nmap
+   - openssl
+   - p7zip
+   - pv
+   - pwgen
+   - ranger
+   - rar
+   - rsync
+   - smbclient
+   - software-properties-common
+   - sshfs
+   - sshpass
+   - tar
+   - tmux
+   - trash-cli
+   - tig
+   - unzip
+   - vim
+   - wget
+   - whois
+   - python
+  tags: install_tools_packages

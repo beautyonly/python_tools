@@ -1,0 +1,15 @@
+/usr/local/apache2/logs/*log {
+    daily
+    rotate 30
+    dateext
+    dateformat -%Y%m%d
+    compress
+    delaycompress
+    missingok
+    notifempty
+    create 644 root root
+    sharedscripts
+    postrotate
+        /usr/local/apache2/bin/apachectl restart > /dev/null 2>/dev/null || true
+    endscript
+}

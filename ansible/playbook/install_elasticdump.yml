@@ -1,0 +1,11 @@
+--- 
+- import_playbook: create_work_dir.yml
+- import_playbook: install_nodejs.yml
+
+- hosts: all
+  remote_user: root
+  gather_facts: false
+  tasks:
+  - name: elasticdump install
+    shell: npm install elasticdump -g
+    tags: install_elasticdump

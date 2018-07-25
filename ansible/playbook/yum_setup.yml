@@ -1,0 +1,35 @@
+---
+- hosts: all
+  remote_user: root
+  gather_facts: false
+  tasks:
+  - name: create repo file backup dir
+    file:
+      path: /etc/yum.repos.d/repo
+      mode: 0755
+      state: directory
+    tags: create_data_dir
+
+  - name: clean /etc/yum.repos.d
+    shell: mv /etc/yum.repos.d/*.repo /etc/yum.repos.d/repo
+    tags: clean
+
+  - name: setup aliyun yum CentOS 6.x
+    get_url: url=http://mirrors.aliyun.com/repo/Centos-6.repo dest=/etc/yum.repos.d/
+    when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "6"
+    tags: setup_aliyun
+
+  - name: setup epel yum CentOS 6.x
+    get_url: url=http://mirrors.aliyun.com/repo/epel-6.repo   dest=/etc/yum.repos.d/
+    when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "6"
+    tags: setup_epel
+
+  - name: setup aliyun yum CentOS 7.x
+    get_url: url=http://mirrors.aliyun.com/repo/Centos-7.repo dest=/etc/yum.repos.d/
+    when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "7"
+    tags: setup_aliyun
+
+  - name: setup epel yum CentOS 7.x
+    get_url: url=http://mirrors.aliyun.com/repo/epel-7.repo   dest=/etc/yum.repos.d/
+    when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "7"
+    tags: setup_epel

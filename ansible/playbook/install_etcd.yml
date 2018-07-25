@@ -1,0 +1,48 @@
+--- 
+- hosts: all
+  remote_user: root
+  gather_facts: false
+  tasks:
+  - name: etcd install
+    yum: 
+      state: latest 
+      name: etcd
+    tags: etcd_install
+
+  - name: rsysc lastet bin file
+    copy:
+      src: files/{{ item }}
+      dest: /usr/bin/{{ item }}
+      owner: root
+      group: root
+      mode: 0755
+    with_items:
+      - etcd
+      - etcdctl
+    tags: update_bin_files
+
+  - name: rsync etcd.conf
+    template:
+      src: files/etcd.conf.j2
+      dest: /etc/etcd/etcd.conf
+      owner: root
+      group: root
+      mode: 0664
+    tags: rsync_etcd_conf
+
+  - name: Make sure a service is running
+    systemd: 
+      state: started 
+      name: etcd
+    tags: etcd_service_running
+
+  - name: enable service etcd and ensure it is not masked
+    systemd:
+      name: etcd
+      enabled: yes
+      masked: no
+    tags: etcd_service_start
+
+  - name: restart etcd
+    shell: systemctl daemon-reload && systemctl restart etcd
+    tags: etcd_restart

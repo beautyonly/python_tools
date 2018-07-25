@@ -1,0 +1,43 @@
+---
+- hosts: all
+  remote_user: root
+  tasks:
+  - name: create data0 dir
+    file:
+      path: /data0/
+      mode: 0755
+      state: directory
+    tags: create_data0_dir
+
+  - name: check /dev/sdb1 
+    shell: fdisk -l|grep sdb1
+    register: sdb1_result
+
+  - name: fdisk /dev/sdb
+    shell: echo -e "n\np\n1\n\n\nw" |fdisk /dev/sdb
+    when: sdb1_result.stdout == "1"
+    tags: fdisk_dev_sdb
+
+  - name: create a ext4 filesystem on /dev/sdb1 and check disk blocks
+    filesystem:
+      fstype: ext4
+      dev: /dev/sdb1
+    tags: mkfs_dev_sdb1
+  
+  - name: check /data0 mount
+    shell: df -Th|grep "/dev/sdb1"
+    register: mount_result
+
+  - name: mount up device
+    shell: mount /dev/sdb1 /data0
+    when: mount_result.stdout == "1"
+    tags: mount_data0
+  
+  - name: mount up device set /etc/fstab
+    mount:
+      path: /data0
+      src: /dev/sdb1
+      fstype: ext4
+      opts: defaults
+      state: present
+    tags: mount_data0_fstab

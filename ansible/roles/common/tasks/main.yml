@@ -1,0 +1,15 @@
+# Hostname
+- name: Set the hostname
+  hostname: name={{ hostname }}
+  tags:
+    - hostname
+
+# Install packages
+- name: Web site build tool chain (GCC, headers etc.)
+  yum: name={{item}} state=present
+  with_items:
+   - gcc
+   - gcc-c++
+   - automake
+   - autoconf
+  when: ansible_pkg_mgr == 'yum'

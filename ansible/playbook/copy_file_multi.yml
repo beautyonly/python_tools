@@ -1,0 +1,10 @@
+---
+- hosts: all
+  remote_user: root
+  tasks:
+  - name: copy local server to client remote dir
+    template: src=/tmp/{{item}} dest=/tmp/
+    with_items:
+      - add_user.yml
+      - copy_file.yml
+      - del_user.yml

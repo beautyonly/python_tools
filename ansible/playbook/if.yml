@@ -1,0 +1,15 @@
+---
+- hosts: gfs_client01_172.16.1.150
+  remote_user: ansible
+  sudo: yes
+  gather_facts: true
+  tasks:
+  - name: if system is centos,then echo CentOS
+    shell: echo "CentOS">/tmp/hostname_type
+    when: ansible_distribution == "CentOS"
+    tags: server-1
+
+  - name: if system is centos,then echo Redhat
+    shell: echo "Redhat">/tmp/hostname_type
+    when: ansible_distribution == "RedHat"
+    tags: server-2

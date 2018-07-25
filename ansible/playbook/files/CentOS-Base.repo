@@ -1,0 +1,49 @@
+[os]
+name=Qcloud centos os - $basearch
+baseurl=http://mirrors.tencentyun.com/centos1/7/os/$basearch/
+enabled=1
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+
+[updates]
+name=Qcloud centos updates - $basearch
+baseurl=http://mirrors.tencentyun.com/centos1/7/updates/$basearch/
+enabled=1
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+
+#[centosplus]
+#name=Qcloud centosplus - $basearch
+#baseurl=http://mirrors.tencentyun.com/centos1/7/centosplus/$basearch/
+#enabled=1
+#gpgcheck=1
+#gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+
+#[contrib]
+#name=Qcloud centos contrib - $basearch
+#baseurl=http://mirrors.tencentyun.com/centos1/7/contrib/$basearch/
+#enabled=1
+#gpgcheck=1
+#gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+
+#[cr]
+#name=Qcloud centos cr - $basearch
+#baseurl=http://mirrors.tencentyun.com/centos1/7/cr/$basearch/
+#enabled=1
+#gpgcheck=1
+#gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+
+[extras]
+name=Qcloud centos extras - $basearch
+baseurl=http://mirrors.tencentyun.com/centos1/7/extras/$basearch/
+enabled=1
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+
+#[fasttrack]
+#name=Qcloud centos fasttrack - $basearch
+#baseurl=http://mirrors.tencentyun.com/centos1/7/fasttrack/$basearch/
+#enabled=1
+#gpgcheck=1
+#gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+

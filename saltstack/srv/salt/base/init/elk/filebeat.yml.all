@@ -1,0 +1,49 @@
+filebeat.prospectors:
+- input_type: log
+  paths:
+    - /var/log/messages
+  document_type: "messages"
+
+- input_type: log
+  paths:
+    - /var/log/secure
+  document_type: "secure"
+
+- input_type: log
+  paths:
+    - /data0/mysql/error.log
+  document_type: "mysql_error"
+
+- input_type: log
+  paths:
+    - /data0/mysql/slow-queries.log
+  document_type: "mysql_slow_queries"
+
+- input_type: log
+  paths:
+    - /var/log/salt/minion
+  document_type: "salt_minion"
+
+- input_type: log
+  paths:
+    - "/usr/local/apache2/logs/*access_log"
+  document_type: "apache_access_log"
+
+- input_type: log
+  paths:
+    - "/usr/local/apache2/logs/*error_log"
+  document_type: "apache_error_log"
+
+name: "118.89.54.135"
+tags: ["YTTX"]
+ignore_older: "24h"
+scan_frequency: "10s"
+tail_files: true
+harvester_buffer_size: 16384
+backoff: "1s"
+
+output.elasticsearch:
+  hosts: ["27.131.221.30:9200"]
+  index: filebeat-%{+yyyy.MM.dd}
+  template.enabled: true
+  worker: 4

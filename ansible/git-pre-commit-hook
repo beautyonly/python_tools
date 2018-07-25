@@ -1,0 +1,10 @@
+#!/bin/env bash
+
+for yaml_file in `find . -name \*.yml`; do
+    ansible-playbook --syntax-check ${yaml_file} > /dev/null 2>&1
+    if [ $? -gt 0 ]; then
+        echo "ERROR: Found a syntax error with ${yaml_file}"
+        echo "ERROR: Please run ansible-playbook --syntax-check ${yaml_file} to view the error"
+        exit 1
+    fi
+done

@@ -1,0 +1,20 @@
+--- 
+- hosts: all
+  remote_user: root
+  gather_facts: false
+  tasks:
+  - name: supervisor install
+    yum: state=latest name=supervisor
+
+  - name: Make sure a service is running
+    systemd: 
+      state: started 
+      name: supervisord
+    tags: supervisord_service_running
+
+  - name: enable service etcd and ensure it is not masked
+    systemd:
+      name: supervisord
+      enabled: yes
+      masked: no
+    tags: supervisor_service_start

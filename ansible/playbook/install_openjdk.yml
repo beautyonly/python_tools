@@ -1,0 +1,8 @@
+---
+- hosts: all
+  remote_user: root
+  gather_facts: false
+  tasks:
+  - name: install java-1.8.0-openjdk
+    yum: state=latest name=java-1.8.0-openjdk
+    tags: install_openjdk_1.8.0

@@ -1,0 +1,34 @@
+pipeline {
+    agent any
+	options {
+	    ansiColor('xterm')
+	    retry(0)
+	    timeout(activity: true, time: 10, unit: 'SECONDS')
+	}
+
+    stages {
+        stage('pull code') {
+            steps {
+				timestamps {
+					echo 'starting pull code ...'
+					git credentialsId: '419e4dfe-9774-4b69-8d4f-ad309edb4aee', url: 'git@github.com:xykong/lovejob.git'
+				}
+            }
+        }
+        stage('build code') {
+            steps {
+                timestamps {
+                    sh 'sh build.sh'
+                }
+            }
+        }
+    }
+    post {
+        always {
+            emailext body: '$DEFAULT_CONTENT', subject: '$DEFAULT_SUBJECT', to: 'dongsheng.ma@lemongrassmedia.cn'
+        }
+        failure {
+            emailext body: '$DEFAULT_CONTENT', subject: '$DEFAULT_SUBJECT', to: 'dongsheng.ma@lemongrassmedia.cn'
+        }
+    }
+}

@@ -1,0 +1,14 @@
+---
+# author: lework
+
+supervisor_conf_path: "/etc/supervisor"
+supervisor_run_path: "/var/run/supervisor"
+supervisor_log_path: "/var/log/supervisor"
+
+supervisor_bin: "/usr/bin/supervisorctl"
+
+supervisor_env: ""
+supervisor_stopsignal: "TERM"
+supervisor_program: []
+# [{ name: 'superset', command: '/usr/local/bin/superset runserver', user: 'superset' }]
+

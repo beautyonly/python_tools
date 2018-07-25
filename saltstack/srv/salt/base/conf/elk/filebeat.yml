@@ -1,0 +1,19 @@
+filebeat.prospectors:
+- input_type: log
+  paths:
+    - /var/log/messages
+  document_type: "messages"
+
+name: ""
+tags: [""]
+ignore_older: "24h"
+scan_frequency: "10s"
+tail_files: true
+harvester_buffer_size: 16384
+backoff: "1s"
+
+output.elasticsearch:
+  hosts: ["27.131.221.30:9200"]
+  index: filebeat-%{+yyyy.MM.dd}
+  template.enabled: true
+  worker: 4

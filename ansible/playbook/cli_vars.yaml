@@ -1,0 +1,9 @@
+---
+- hosts: '{{ hosts }}'
+  remote_user: '{{ user }}'
+
+  tasks:
+  - name: ensure apache is at the latest version
+    yum: name=httpd state=latest
+
+# ansible-playbook cli_vars.yaml --extra-vars "hosts=all user=root"

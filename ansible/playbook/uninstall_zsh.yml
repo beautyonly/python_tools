@@ -1,0 +1,15 @@
+--- 
+- hosts: all
+  remote_user: root
+  gather_facts: false
+  tasks:
+  - name: change root user default shell
+    shell: chsh -s /bin/bash
+
+  - name: clean files
+    file: name={{ item }} state=absent
+    with_items:
+    - "~/.zsh_history"
+    - "~/.zshrc"
+    - "~/.zsh-update"
+    - "~/.oh-my-zsh"

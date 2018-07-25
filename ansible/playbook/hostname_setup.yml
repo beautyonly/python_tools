@@ -1,0 +1,16 @@
+---
+- hosts: all
+  remote_user: root
+  tasks:
+  - name: Set the hostname
+    hostname: name={{ hostname }}
+    tags:
+      - hostname
+
+  #- name: set hostname to ip 
+  #  lineinfile:
+  #    path: /etc/hosts
+  #    state: present
+  #    backup: yes
+  #    line: '{{ansible_eth0.ipv4.address}} {{ hostname }}'
+  #  tags: hostname_resolve

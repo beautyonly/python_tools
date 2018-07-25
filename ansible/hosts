@@ -1,0 +1,31 @@
+[local]
+127.0.0.1 ansible_ssh_host=127.0.0.1 ansible_ssh_port=22 hostname=local.mdslq.cn
+
+[remote]
+193.112.50.123 ansible_ssh_host=193.112.50.123 ansible_ssh_port=22 ansible_ssh_private_key_file=~/.ssh/keys/ssh_key_01 hostname=master.mdslq.cn
+
+[docker]
+172.17.0.2 ansible_ssh_host=172.17.0.2 wan_ip=172.17.0.2 qcloud_zone=ap-shanghai-1 endpoint=os-01 hostname=os-01
+172.17.0.4 ansible_ssh_host=172.17.0.4 wan_ip=172.17.0.4 qcloud_zone=ap-shanghai-1 endpoint=os-04 hostname=os-04
+172.17.0.5 ansible_ssh_host=172.17.0.5 wan_ip=172.17.0.5 qcloud_zone=ap-shanghai-1 endpoint=os-05 hostname=os-05
+
+[other-test]
+10.1.16.151 ansible_ssh_host=10.1.16.151 wan_ip=10.1.16.151 qcloud_zone=ap-shanghai-1 endpoint=gs01      hostname=gs01
+
+[ubuntu]
+10.1.16.124 ansible_ssh_host=10.1.16.124 ansible_ssh_user=ubuntu
+
+[develop]
+10.1.16.151 ansible_ssh_host=10.1.16.151 wan_ip=10.1.16.151 qcloud_zone=ap-shanghai-1 endpoint=gs01      hostname=gs01
+
+[master]
+10.1.16.152 ansible_ssh_host=10.1.16.152 wan_ip=10.1.16.152 qcloud_zone=ap-shanghai-1 endpoint=gs02      hostname=gs02
+
+[publish]
+10.1.16.153 ansible_ssh_host=10.1.16.153 wan_ip=10.1.16.153 qcloud_zone=ap-shanghai-1 endpoint=gs03      hostname=gs03
+
+[ios_review]
+10.1.16.154 ansible_ssh_host=10.1.16.154 wan_ip=10.1.16.154 qcloud_zone=ap-shanghai-1 endpoint=gs04      hostname=gs04
+
+[online]
+10.1.16.155 ansible_ssh_host=10.1.16.155 wan_ip=10.1.16.155 qcloud_zone=ap-shanghai-1 endpoint=gs05      hostname=gs05

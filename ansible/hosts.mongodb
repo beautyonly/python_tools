@@ -1,0 +1,8 @@
+[mongodb]
+192.168.200.100 NODE_NAME=etcd1 NODE_IP="192.168.200.100" hostname=mongodb1
+192.168.200.101 NODE_NAME=etcd2 NODE_IP="192.168.200.101" hostname=mongodb2
+192.168.200.102 NODE_NAME=etcd3 NODE_IP="192.168.200.102" hostname=mongodb3
+
+[all:vars]
+replSetName="rs0"
+admin_ip="192.168.200.100"

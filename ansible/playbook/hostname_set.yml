@@ -1,0 +1,8 @@
+---
+- hosts: openstack
+  remote_user: ansible
+  sudo: yes
+  vars:
+  tasks:
+  - name: Set the hostname
+    hostname: name=openstack_{{ansible_default_ipv4.address}}

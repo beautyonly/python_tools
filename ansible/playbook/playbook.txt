@@ -1,0 +1,19 @@
+系统关机
+方法1:
+- hosts: webservers
+  remote_user: root
+  tasks:
+- name: reboot the servers
+  action: command /sbin/reboot -t now
+  
+
+- name: reboot the servers
+  command: /sbin/reboot -t now
+  或者
+  command: /sbin/shutdown -t now
+  
+  
+ERROR: action is not a legal parameter of an Ansible Play
+  
+ 
+  

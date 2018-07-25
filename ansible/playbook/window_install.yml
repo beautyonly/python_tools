@@ -1,0 +1,9 @@
+---
+- hosts: zjdfw-db-1-123.59.77.214
+  remote_user: ansible
+  sudo: yes
+
+  tasks:
+  - name: host info
+    setup: filter=ansible_processor_count
+    tags: setup_dns

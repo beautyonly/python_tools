@@ -1,0 +1,12 @@
+---
+- hosts: all
+  remote_user: root
+  gather_facts: false
+  tasks:
+  - name: set TMOUT=1800
+    lineinfile:
+      path: /etc/profile
+      state: present
+      backup: yes
+      line: 'TMOUT=1800'
+    tags: set_TMOUT_vars

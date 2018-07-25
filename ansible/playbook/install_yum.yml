@@ -1,0 +1,33 @@
+--- 
+- hosts: all
+  remote_user: root
+  gather_facts: false
+  tasks:
+  - name: rpm install
+    yum: state=latest name={{item}}
+    with_items:
+      - gcc
+      - gcc-c++
+      - automake
+      - autoconf
+      - lrzsz
+      - wget
+      - tree
+      - telnet
+      - nmap
+      - python-pip
+      - python-devel
+      - curl 
+      - unzip
+      - screen
+      - sysstat
+      - git 
+      - bash-completion 
+      - net-tools 
+      - bind-utils 
+      - tcpdump 
+      - lsof 
+      - vim 
+      - dos2unix
+      - htop
+      - rsync

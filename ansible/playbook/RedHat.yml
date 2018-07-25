@@ -1,0 +1,32 @@
+--- 
+# Tasks specific for RedHat systems
+
+- name: RedHat os tools packages install
+  yum: state=latest name={{item}}
+  with_items:
+    - gcc
+    - gcc-c++
+    - automake
+    - autoconf
+    - lrzsz
+    - wget
+    - tree
+    - telnet
+    - nmap
+    - python-pip
+    - python-devel
+    - curl 
+    - unzip
+    - screen
+    - sysstat
+    - git 
+    - bash-completion 
+    - net-tools 
+    - bind-utils 
+    - tcpdump 
+    - lsof 
+    - vim 
+    - dos2unix
+    - htop
+    - rsync
+  tags: install_tools_packages

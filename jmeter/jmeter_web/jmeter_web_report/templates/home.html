@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>JMeter Report</title>
+</head>
+
+<body>
+    <h1 style="font-style:italic">JMeter Report</h1>
+    <div>
+        <ul>
+        {% for name, value in dirs_name.items() %}
+            <li><a href="http://193.112.50.123/{{ name }}">{{ name }}</a></li>
+        {% endfor %}
+        </ul>
+    </div>
+</body>
+
+</html>

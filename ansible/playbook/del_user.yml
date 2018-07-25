@@ -1,0 +1,11 @@
+---
+- hosts: gfs
+  remote_user: ansible
+  sudo: yes
+  gather_facts: true
+  tasks:
+  - name: del several users
+    user: name={{ item }} state=absent remove=yes
+    with_items:
+     - testuser1
+     - testuser2   

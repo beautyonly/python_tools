@@ -1,0 +1,9 @@
+[program:{{ program_name }}]
+directory = /disk/online/{{ program_name }}
+command = /disk/online/{{ program_name }}/scripts/start.sh
+stderr_logfile=/disk/online/{{ program_name }}/logs/{{ program_name }}_err.log
+stdout_logfile=/disk/online/{{ program_name }}/logs/{{ program_name }}_out.log
+autostart=true
+autorestart=true
+startsecs=5
+priority=1

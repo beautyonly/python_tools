@@ -1,0 +1,29 @@
+loveauth-mysql:
+  image: 'mysql:5.7.22'
+  restart: always
+  ports:
+    - '23306:3306'
+  volumes:
+    - /opt/docker/mysql/loveauth-db:/var/lib/mysql
+  environment:
+    - MYSQL_ROOT_PASSWORD=123456
+
+loveauth-redis:
+  image: 'redis:2.8.23'
+  restart: always
+  ports:
+    - '26379:6379'
+
+loveauth-centos-ssh:
+  image: 'centos-ssh:7'
+  restart: always
+  privileged: true
+  volumes:
+    - /sys/fs/cgroup:/sys/fs/cgroup:ro
+  ports:
+    - '3180:3180'
+    - '2080:80'
+    - '2022:22'
+  links:
+    - loveauth-mysql:mysql-db
+    - loveauth-redis:redis-db

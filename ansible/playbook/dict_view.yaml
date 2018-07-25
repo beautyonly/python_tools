@@ -1,0 +1,13 @@
+---
+- hosts: all
+  vars:
+    hosts:
+      testhost1: 127.0.0.2
+      testhost2: 127.0.0.3
+  tasks:
+    - debug:
+        msg: '{{ item }}'
+      # Only works with Python 2
+      #with_items: "{{ hosts.keys() }}"
+      # Works with both Python 2 and Python 3
+      with_items: "{{ hosts.keys() | list }}"

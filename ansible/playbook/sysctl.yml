@@ -1,0 +1,13 @@
+--- 
+- hosts: openstack
+  remote_user: ansible
+  sudo: yes
+  tasks:
+  - name: /etc/sysctl.conf setup 
+    shell: 
+      cp /etc/sysctl.conf{,.`date +%Y%m%d`};
+      sed -i 's/net.ipv4.ip_forward = 0/net.ipv4.ip_forward = 1/g' /etc/sysctl.conf;
+      sed -i 's/net.ipv4.conf.default.rp_filter = 1/net.ipv4.conf.default.rp_filter = 0/g' /etc/sysctl.conf;
+      sysctl -p;
+    tags: 
+      - sysctl_setup

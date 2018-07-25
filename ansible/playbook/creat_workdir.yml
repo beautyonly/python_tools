@@ -1,0 +1,10 @@
+---
+- hosts: all
+  remote_user: root
+  gather_facts: false
+  tasks:
+  - name: create work dir
+    shell:
+       mkdir -p /application/tools
+    tags:
+      - create_work_dir

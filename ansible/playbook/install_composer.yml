@@ -1,0 +1,15 @@
+--- 
+- hosts: all
+  remote_user: root
+  tasks:
+  - name: create tmp /data0/src/
+    file:
+      path: /data0/src/
+      mode: 0755
+      state: directory
+
+  - name: install composer
+    shell: cd /data0/src && wget http://10.0.0.23:9012/composer && install composer /usr/bin/composer
+
+  - name: remove /usr/local/bin/composer
+    shell: cd /usr/local/bin/ && rm -f composer

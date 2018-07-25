@@ -1,0 +1,19 @@
+---
+- hosts: all
+  remote_user: root
+  gather_facts: false
+  tasks:
+  - name: Set sysctl file limiits
+    # pam_limits: domain='*' limit_type=`item`.`limit_type` limit_item=`item`.`limit_item` value=`item`.`value` 
+    pam_limits:
+      dest: "{{ item.dest }}"
+      domain: '*'
+      limit_type: "{{ item.limit_type }}"
+      limit_item: "{{ item.limit_item }}"
+      value: "{{ item.value }}"
+    with_items:
+      - { dest: '/etc/security/limits.conf',limit_type: 'soft',limit_item: 'nofile', value: '102400' }
+      - { dest: '/etc/security/limits.conf',limit_type: 'hard',limit_item: 'nofile', value: '204800'}
+      - { dest: '/etc/security/limits.conf',limit_type: 'soft',limit_item: 'nproc', value: '102400' }
+      - { dest: '/etc/security/limits.conf',limit_type: 'hard',limit_item: 'nproc', value: '204800' }
+    tags: setlimits

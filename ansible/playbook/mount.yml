@@ -1,0 +1,22 @@
+--- 
+- hosts: openstack
+  remote_user: ansible
+  sudo: yes
+  tasks:
+  - name: make mount directories
+    shell: /bin/mkdir -p /data{0,1}                 #创建挂载点目录
+  
+  - name: make filesystem
+    filesystem: fstype=ext4 dev={{ item }}     #格式化文件系统
+    with_items:
+       - /dev/sdb1
+       - /dev/sdb2
+  
+  - name: mount the data0 partition
+    mount: name=/data0 src=/dev/sdb1 fstype=ext4 state=present    #挂载分区
+  
+  - name: mount the datai1 partition
+    mount: name=/data1 src=/dev/sdb2 fstype=ext4 state=present
+
+  - name: mount fstab
+    shell: mount -a    #挂载fstab上的所有设备

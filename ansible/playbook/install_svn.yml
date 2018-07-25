@@ -1,0 +1,43 @@
+--- 
+- hosts: all
+  remote_user: root
+  gather_facts: false
+  tasks:
+  - name: install svn server
+    yum: name=subversion state=latest
+    
+  - name: rm /etc/init.d/svnserve
+    command: rm -f /etc/init.d/svnserve
+    
+  - name: copy svn to /etc/init.d/
+    copy: 
+      src: files/svn/svn 
+      dest: /etc/init.d/svn
+      mode: 0755
+      owner: root
+      group: root
+    
+  - name: mk svn dir
+    command: mkdir -p {{item}}
+    with_items:
+        - /data0/svn
+        - /data0/svn/conf
+        
+  - name: copy autorized files
+    copy:
+      src: files/svn/authz
+      dest: /data0/svn/conf/authz
+      mode: 0644
+      owner: root
+      group: root
+	  
+  - name: copy pasword files
+    copy: 
+      src: files/svn/passwd
+      dest: /data0/svn/conf/passwd
+      mode: 0644
+      owner: root
+      group: root
+    
+  - name: reboot svn server
+    command: service svn restart

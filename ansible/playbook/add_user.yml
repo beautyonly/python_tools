@@ -1,0 +1,12 @@
+---
+- hosts: all
+  remote_user: root
+  gather_facts: true
+  tasks:
+  - name: Add several users
+    user: name={{ item }} groups=wheel state=present password="$6$rounds=656000$OCpb9GbT01elv/IQ$gfKJJSzMUXMstTAkmXZpXYwkulkxj9wfTTJ5qGz3qCN6VMlsbIip4vk95d3Gnli3SpKB5gx7cT16mCu9/Ez490"
+    with_items:
+     - testuser1
+     - testuser2
+#pip install passlib
+#python -c "from passlib.hash import sha512_crypt; print sha512_crypt.encrypt('123456')"

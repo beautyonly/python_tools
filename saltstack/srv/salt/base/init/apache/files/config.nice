@@ -1,0 +1,34 @@
+#! /bin/sh
+#
+# Created by configure
+
+"./configure" \
+"--prefix=/usr/local/apache2" \
+"--disable-authz-groupfile" \
+"--disable-authz-user" \
+"--disable-authn-file" \
+"--disable-status" \
+"--disable-autoindex" \
+"--disable-asis" \
+"--disable-negotiation" \
+"--disable-actions" \
+"--disable-userdir" \
+"--enable-rewrite" \
+"--enable-so" \
+"--enable-ssl" \
+"--enable-headers" \
+"--enable-expires" \
+"--disable-proxy-ftp" \
+"--disable-proxy-ajp" \
+"--disable-proxy-balancer" \
+"--disable-v4-mapped" \
+"--enable-static-support" \
+"--enable-static-rotatelogs" \
+"--disable-ipv6" \
+"--with-included-apr" \
+"--enable-proxy" \
+"--enable-proxy-http" \
+"--enable-proxy-connect" \
+"--disable-threads" \
+"--disable-cgid" \
+"$@"

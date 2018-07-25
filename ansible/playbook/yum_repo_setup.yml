@@ -1,0 +1,46 @@
+--- 
+- hosts: all
+  remote_user: root
+  tasks:
+  - name: rsync local.repo
+    template:
+      src: files/local.repo
+      dest: /etc/yum.repos.d/local.repo
+      owner: root
+      group: root
+      mode: 0644
+    tags: rsync_repo_file
+
+  - name: create backup repo dir
+    file:
+      path: /etc/yum.repos.d/repo/
+      mode: 0755
+      state: directory
+    tags: create_backup_repo_dir
+
+  - name: backup tlinux repo
+    shell: cd /etc/yum.repos.d/ && mv tlinux*.repo /etc/yum.repos.d/repo/
+    ignore_errors: yes
+    tags: backup_tlinux_repo_file
+
+  - name: rsync aliyun repo
+    template:
+      src: files/{{ item }}
+      dest: /etc/yum.repos.d/{{ item }}
+      owner: root
+      group: root
+      mode: 0644
+    with_items:
+      #- CentOS-Base.repo
+      #- epel.repo
+      - CentOS-Base.repo
+      - CentOS-Epel.repo
+    tags: rsync_repo_file
+
+  #- name: yum clean all
+  #  shell: yum clean all
+  #  tags: yum_clean_all
+  
+  #- name: yum repo makecache
+  #  shell: yum makecache
+  #  tags: yum_make_cache

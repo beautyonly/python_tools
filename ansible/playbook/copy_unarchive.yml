@@ -1,0 +1,7 @@
+---
+- hosts: all
+  remote_user: root
+  gather_facts: false
+  tasks:
+  - name: remote copy decompress
+    unarchive: src=/home/ansible/script/yml_file/taobao1.tar.gz dest=/usr/local copy=yes

@@ -1,0 +1,39 @@
+---
+- hosts: all
+  become: true
+  become_user: root
+  remote_user: root
+  tasks:
+  - name: rsysc 90-graylog.conf
+    template:
+      src: files/90-graylog.conf.j2
+      dest: /etc/rsyslog.d/90-graylog.conf
+      owner: root
+      group: root
+      mode: 0644
+    tags: rsync_graylog_conf
+
+  - name: systemd Make sure a service is running
+    systemd: state=started name=rsyslog
+    when: ansible_os_family == "RedHat"
+    tags: start_rsyslog
+
+  - name: systemd enable service httpd and ensure it is not masked
+    systemd:
+      name: rsyslog
+      enabled: yes
+      masked: no
+    when: ansible_os_family == "RedHat"
+    tags: onboot_rsyslog
+
+  - name: service Make sure a service is running
+    service: state=started name=rsyslog
+    when: ansible_os_family == "Debian"
+    tags: start_rsyslog
+
+  - name: service enable service httpd and ensure it is not masked
+    service:
+      name: rsyslog
+      enabled: yes
+    when: ansible_os_family == "Debian"
+    tags: onboot_rsyslog
